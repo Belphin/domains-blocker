@@ -6,26 +6,37 @@ class DomainsBlocker:
 		this is a class for blocking domains on a computer
 
 		example:
+			object = DomainsBlocker([domain,])
+			object.start()
 
-		object = DomainsBlocker([domain, ])
-		object.start(time start, time finish)
+		setters:
+			setdomain([domain,])
+			settimeframe(start_time, finish_time)
 	"""
 	hosts = r'C:\Windows\System32\drivers\etc\hosts'
 
-	def __init__(self, blocked_sites):
+	def __init__(self, blocked_sites,
+			start_time = datetime(datetime.now().year, datetime.now().month, datetime.now().day, datetime.now().hour), 
+			finish_time = datetime(datetime.now().year, datetime.now().month, datetime.now().day, datetime.now().hour + 1)):
+
+		self.blocked_sites = blocked_sites
+		self._start_time = datetime(datetime.now().year, datetime.now().month, datetime.now().day, start_time)
+		self._finish_time = datetime(datetime.now().year, datetime.now().month, datetime.now().day, finish_time)
+
+	def setdomain(self, blocked_sites):
 		self.blocked_sites = blocked_sites
 
-	def start (self, start, stop):
-		self.start_time = datetime(datetime.now().year, datetime.now().month, datetime.now().day, start)
-		self.finish_time = datetime(datetime.now().year, datetime.now().month, datetime.now().day, stop)
+	def settimeframe(self, start_time, finish_time):
+		self._start_time = datetime(datetime.now().year, datetime.now().month, datetime.now().day, start_time)
+		self._finish_time = datetime(datetime.now().year, datetime.now().month, datetime.now().day, finish_time)
 
-		print(self.start_time)
-		print(self.finish_time)
+	def start (self):
+		print(f'start_time: {self._start_time}\nfinish_time: {self._finish_time}')
 
 		redirect_url = '127.0.0.1'
 
 		while True:
-			if self.start_time < datetime.now() < self.finish_time:
+			if self._start_time < datetime.now() < self._finish_time:
 				print('Access closed!')
 
 				with open(self.hosts, 'r+') as file:
@@ -46,9 +57,4 @@ class DomainsBlocker:
 							file.write(line)
 					file.truncate()
 				print('Access is open!')
-
 			time.sleep(5)
-
-
-block = DomainsBlocker(["www.youtube.com", "youtube.com"])
-block.start(2, 10)
