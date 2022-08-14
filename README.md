@@ -9,7 +9,7 @@ naturally the idea is not mine, I just implemented a well-known principle
 ### example:
 
 <pre>
-object = DomainsBlocker([domain, ])                          # create a class object, a list of domains as a parameter
+object = DomainsBlocker([domain,])                          # create a class object, a list of domains as a parameter
 object = DomainsBlocker([domain, start_time, finish_time])   # create class object, list of domains and timeframe as parameters
 
 object.start()                                               # execute the start method
